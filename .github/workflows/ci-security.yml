@@ -14,13 +14,22 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Important for SonarQube code history tracking
 
-      # 1. Local SAST Scan (Finds the hardcoded AWS token & command injection in app.js)
-      - name: Run Trivy Code SAST & Secret Scan
+      # 1. SAST Scan via your Self-Hosted GKE SonarQube
+      - name: SonarQube Scan (SAST)
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      # 2. Local SCA & IaC Scan via Trivy
+      - name: Run Trivy Code SCA & Manifest Scan
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
           scanners: 'vuln,secret,misconfig'
           format: 'table'
-          exit-code: '0' # Keeps the pipeline passing so we can move to deployment phase
+          exit-code: '0'
           severity: 'HIGH,CRITICAL'
