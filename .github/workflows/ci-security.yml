@@ -17,16 +17,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 1. SAST Scan via your Self-Hosted GKE SonarQube with Explicit Project Key
+      # 1. Manual SonarQube Scan using raw CLI arguments
       - name: SonarQube Scan (SAST)
-        uses: sonarsource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        with:
-          args: >
-            -Dsonar.projectKey=gitops-sec-demo
-            -Dsonar.projectName=gitops-sec-demo
+        run: |
+          npm install -g sonar-scanner
+          sonar-scanner \
+            -Dsonar.host.url="${{ secrets.SONAR_HOST_URL }}" \
+            -Dsonar.login="${{ secrets.SONAR_TOKEN }}" \
+            -Dsonar.projectKey=gitops-sec-demo \
+            -Dsonar.projectName=gitops-sec-demo \
+            -Dsonar.sources=.
 
       # 2. Local SCA & IaC Scan via Trivy
       - name: Run Trivy Code SCA & Manifest Scan
