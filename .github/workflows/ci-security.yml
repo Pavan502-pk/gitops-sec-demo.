@@ -15,14 +15,18 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Important for SonarQube code history tracking
+          fetch-depth: 0
 
-      # 1. SAST Scan via your Self-Hosted GKE SonarQube
+      # 1. SAST Scan via your Self-Hosted GKE SonarQube with Explicit Project Key
       - name: SonarQube Scan (SAST)
         uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          args: >
+            -Dsonar.projectKey=gitops-sec-demo
+            -Dsonar.projectName=gitops-sec-demo
 
       # 2. Local SCA & IaC Scan via Trivy
       - name: Run Trivy Code SCA & Manifest Scan
