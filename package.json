@@ -1,0 +1,9 @@
+{
+  "name": "gitops-sec-demo",
+  "version": "1.0.0",
+  "description": "Vulnerable app for devsecops learning",
+  "main": "app.js",
+  "dependencies": {
+    "express": "4.16.0"
+  }
+}
