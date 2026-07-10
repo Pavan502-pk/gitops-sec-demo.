@@ -17,14 +17,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 1. Modern SonarQube Scan using the official CLI Docker Container
+      # 1. Modern SonarQube Scan with hardcoded parameters for debugging
       - name: SonarQube Scan (SAST)
         run: |
           docker run --rm \
             -v "${{ github.workspace }}:/usr/src" \
             sonarsource/sonar-scanner-cli \
-            -Dsonar.host.url="${{ secrets.SONAR_HOST_URL }}" \
-            -Dsonar.token="${{ secrets.SONAR_TOKEN }}" \
+            -Dsonar.host.url="http://34.148.24.144:9000" \
+            -Dsonar.token="sqa_988c64a7f44406fb931de6acf58bb4c207b4083b" \
             -Dsonar.projectKey=gitops-sec-demo \
             -Dsonar.projectName=gitops-sec-demo \
             -Dsonar.sources=.
