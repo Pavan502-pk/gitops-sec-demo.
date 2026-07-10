@@ -17,14 +17,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 1. Modern SonarQube Scan with hardcoded parameters for debugging
+      # 1. SonarQube Scan with the correct Global Analysis Token
       - name: SonarQube Scan (SAST)
         run: |
           docker run --rm \
             -v "${{ github.workspace }}:/usr/src" \
             sonarsource/sonar-scanner-cli \
             -Dsonar.host.url="http://34.148.24.144:9000" \
-            -Dsonar.token="sqa_988c64a7f44406fb931de6acf58bb4c207b4083b" \
+            -Dsonar.token="sqa_db086428f70fa7355e3c2ff77e75b7e44394a56a" \
             -Dsonar.projectKey=gitops-sec-demo \
             -Dsonar.projectName=gitops-sec-demo \
             -Dsonar.sources=.
